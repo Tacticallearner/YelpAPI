@@ -1,45 +1,31 @@
-async function fetchYachtDetails() {
-    try {
-        const response = await fetch('https://api.yourapp.com/yachts', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                // Include API key if required
-                // 'Authorization': 'Bearer YOUR_API_KEY'
-            }
-        });
+import requests
+import streamlit as st
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+def fetch_yacht_details():
+    try:
+        url = 'https://api.yourapp.com/yachts'
+        headers = {
+            'Content-Type': 'application/json',
+            # Include API key if required
+            # 'Authorization': 'Bearer YOUR_API_KEY'
         }
+        response = requests.get(url, headers=headers)
 
-        const data = await response.json();return (
-    <div>
-        {yachtData.length > 0 ? (
-            yachtData.map((yacht, index) => (
-                <div key={index}>
-                    <h2>{yacht.name}</h2>
-                    <p>Model: {yacht.yacht_details.model}</p>
-                    // Other yacht details
-                </div>
-            ))
-        ) : (
-            <p>No yacht data available.</p>
-        )}
-    </div>
-);
+        if response.status_code != 200:
+            # Handle response errors
+            st.error(f'Error fetching data: {response.status_code}')
+            return None
 
-        return data;
-    } catch (error) {
-        console.error('Error fetching yacht details:', error);
-    }
-}
-const [yachtData, setYachtData] = useState([]);
+        return response.json()
+    except Exception as e:
+        st.error(f'An error occurred: {e}')
+        return None
 
-useEffect(() => {
-    fetchYachtDetails().then(data => {
-        if (data) {
-            setYachtData(data);
-        }
-    });
-}, []);
+# Using the function in a Streamlit app
+yacht_data = fetch_yacht_details()
+if yacht_data:
+    for yacht in yacht_data:
+        st.write(f"Name: {yacht['name']}")
+        # Display other yacht details
+else:
+    st.write("No yacht data available.")
