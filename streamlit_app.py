@@ -115,5 +115,46 @@
 		"waiter_service": {boolean},
 		"wheelchair_accessible": {boolean},
 		"wifi": {string}
-	}
+
+{
+  "matching_criteria": {
+    "latitude": {double},
+    "longitude": {double},
+    "name": {string},
+    "type": {"yacht" | "car"}, // New field to specify type
+    // ... other existing fields ...
+  },
+  "update": {
+    "yacht_details": { // New object for yacht-specific details
+      "model": {string},
+      "length": {string},
+      "builder": {string},
+      "year": {string},
+      "dock_location": {string}
+    },
+    "car_details": { // New object for car-specific details
+      "make": {string},
+      "model": {string},
+      "year": {string},
+      "color": {string},
+      "rental_location": {string}
+    },
+    "availability": {boolean},
+    "pricing": {
+      "rental_rate": {number},
+      "sale_price": {number}
+    },
+    "image_gallery": [ // Array of image URLs
+      {string} // URL
+    ],
+    "reviews": [ // Array of review objects
+      {
+        "user_id": {string},
+        "rating": {number},
+        "comment": {string},
+        "date": {date}
+      }
+    ],
+    // ... other existing fields ...
+  }
 }
